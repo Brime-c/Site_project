@@ -52,3 +52,5 @@ class TestHTMLNode(unittest.TestCase):
             parent_node.to_html(),
             "<div><b>child1</b><i>child2</i></div>",
         )
+if __name__ == "__main__":
+    unittest.main()

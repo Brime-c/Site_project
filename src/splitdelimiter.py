@@ -5,5 +5,16 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     for old_node in old_nodes:
         if old_node.text_type != TextType.TEXT:
             new_nodes_list.append(old_node)
-        if delimiter in TextType:
-            bold_split = str(old_node).split(delimiter)
+            continue
+        
+        text_split = old_node.text.split(delimiter)
+        if len(text_split) % 2 == 0:
+            raise Exception("unmatched delimiter found")
+        for idx, chunk in enumerate(text_split):
+            if chunk == "":
+                continue
+            elif idx % 2 == 0:
+                new_nodes_list.append(TextNode(chunk, TextType.TEXT))
+            elif idx % 2 == 1:
+                new_nodes_list.append(TextNode(chunk, text_type))
+    return new_nodes_list
