@@ -1,29 +1,34 @@
 import unittest
 
 from textnode import TextNode, TextType
-from inline_markdown import split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link
+from inline_markdown import split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes
 class TestInlineMarkdown(unittest.TestCase):
     def test_one_delimiter(self):
         node = TextNode("this is a **bold** text", TextType.TEXT)
         result = split_nodes_delimiter([node],"**", TextType.BOLD)
-        expected = [
-            TextNode("this is a ", TextType.TEXT),
-            TextNode("bold", TextType.BOLD),
-            TextNode(" text", TextType.TEXT),
-        ]
-        self.assertEqual(result, expected)
+        self.assertListEqual(
+            [
+                TextNode("this is a ", TextType.TEXT),
+                TextNode("bold", TextType.BOLD),
+                TextNode(" text", TextType.TEXT),
+            ],
+            result
+        )
 
     def test_mult_delimiter(self):
         node = TextNode("hello **you** are seeing a **bold** text node",TextType.TEXT)
         result = split_nodes_delimiter([node],"**", TextType.BOLD)
-        expected = [
-            TextNode("hello ", TextType.TEXT),
-            TextNode("you", TextType.BOLD),
-            TextNode(" are seeing a ", TextType.TEXT),
-            TextNode("bold", TextType.BOLD),
-            TextNode(" text node", TextType.TEXT)
-        ]
-        self.assertEqual(result,expected)
+        self.assertListEqual(
+            [
+                TextNode("hello ", TextType.TEXT),
+                TextNode("you", TextType.BOLD),
+                TextNode(" are seeing a ", TextType.TEXT),
+                TextNode("bold", TextType.BOLD),
+                TextNode(" text node", TextType.TEXT)
+            ],
+            result
+        )
+        
 
     def test_no_delimiter(self):
         node = TextNode("hello, how are you", TextType.TEXT)
@@ -122,6 +127,25 @@ class TestInlineMarkdown(unittest.TestCase):
             ],
             new_nodes
         )
-
+    
+    def test_text_to_textnodes(self):
+        node = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+            
+        new_nodes = text_to_textnodes(node)
+        self.assertListEqual(
+            [
+                TextNode("This is ", TextType.TEXT),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.TEXT),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.TEXT),
+                TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" and a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
+            new_nodes
+        )
 if __name__ == "__main__":
     unittest.main()

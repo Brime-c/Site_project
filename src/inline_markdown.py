@@ -10,7 +10,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         
         text_split = old_node.text.split(delimiter)
         if len(text_split) % 2 == 0:
-            raise Exception("unmatched delimiter found")
+            raise ValueError("unmatched delimiter found")
         for idx, chunk in enumerate(text_split):
             if chunk == "":
                 continue
@@ -78,3 +78,12 @@ def split_nodes_link(old_nodes):
             new_nodes_list.append(TextNode(original_text, TextType.TEXT))
 
     return new_nodes_list
+
+def text_to_textnodes(text):
+    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = split_nodes_delimiter(nodes,"**",TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes
