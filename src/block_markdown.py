@@ -1,7 +1,7 @@
 import re
 from enum import Enum
 from textnode import TextNode, TextType
-from htmlnode import HTMLNode
+from htmlnode import HTMLNode, LeafNode, ParentNode
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
     HEADING = "heading"
@@ -50,4 +50,4 @@ def markdown_to_html_node(markdown):
     block_type = block_to_block(markdown)
     for block in blocks:
         if block_type == BlockType.HEADING:
-            pass
+            
