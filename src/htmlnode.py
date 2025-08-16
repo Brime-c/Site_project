@@ -6,7 +6,7 @@ class HTMLNode:
         self.props = props
     
     def to_html(self):
-        raise NotImplementedError
+        raise NotImplementedError("to html method not implemented")
     
     def props_to_html(self):
         prop_string = ""
@@ -43,9 +43,8 @@ class ParentNode(HTMLNode):
             raise ValueError("Children not found")
         children_htmlstring = ""
         for c in self.children:
-            string = c.to_html()
-            children_htmlstring += string
-        return f"<{self.tag}>{children_htmlstring}</{self.tag}>"
+            children_htmlstring += c.to_html()
+        return f"<{self.tag}{self.props_to_html()}>{children_htmlstring}</{self.tag}>"
     
 
     
