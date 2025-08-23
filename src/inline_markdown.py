@@ -14,9 +14,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         for idx, chunk in enumerate(text_split):
             if chunk == "":
                 continue
-            elif idx % 2 == 0:
+            elif idx % 2 == 0 and chunk.strip() != "":
                 new_nodes_list.append(TextNode(chunk, TextType.TEXT))
-            elif idx % 2 == 1:
+            elif idx % 2 == 1 and chunk.strip() != "":
                 new_nodes_list.append(TextNode(chunk, text_type))
     return new_nodes_list
 
@@ -43,11 +43,11 @@ def split_nodes_image(old_nodes):
             text_split = original_text.split(image_markdown,1)
             original_text = text_split[1]
 
-            if text_split[0] != "":
+            if text_split[0].strip() != "":
                 new_nodes_list.append(TextNode(text_split[0], TextType.TEXT))
             new_nodes_list.append(TextNode(image_alt, TextType.IMAGE, image_url))
 
-        if original_text !="":
+        if original_text.strip() !="":
             new_nodes_list.append(TextNode(original_text, TextType.TEXT))
 
     return new_nodes_list
@@ -70,11 +70,11 @@ def split_nodes_link(old_nodes):
             text_split = original_text.split(link_markdown,1)
             original_text = text_split[1]
 
-            if text_split[0] != "":
+            if text_split[0].strip() != "":
                 new_nodes_list.append(TextNode(text_split[0], TextType.TEXT))
             new_nodes_list.append(TextNode(link_text, TextType.LINK, link_url))
 
-        if original_text !="":
+        if original_text.strip() !="":
             new_nodes_list.append(TextNode(original_text, TextType.TEXT))
 
     return new_nodes_list

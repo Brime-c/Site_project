@@ -66,7 +66,8 @@ def markdown_to_html_node(markdown):
             html_list.append(ParentNode("blockquote", children=text_to_children(quote_content)))
         elif block_type == BlockType.PARAGRAPH:
             para_text = block.replace('\n', ' ')
-            html_list.append(ParentNode("p", children=text_to_children(para_text)))
+            if para_text.strip():
+                html_list.append(ParentNode("p", children=text_to_children(para_text)))
         elif block_type == BlockType.CODE:
             lines = block.split('\n')
             code_text = '\n'.join(lines[1:-1]) + '\n'
