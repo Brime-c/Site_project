@@ -55,5 +55,7 @@ def generate_page(from_path, template_path, dest_path):
     with open(dest_path, "w") as f:
         f.write(page_html)
 
+def generate_page_recursive(dir_path_content, template_path, dest_dir_path):
+    pass
 if __name__ == "__main__":
     main()
